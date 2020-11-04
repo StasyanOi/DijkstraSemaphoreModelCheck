@@ -7,3 +7,4 @@ rm ./code/verify.pml
 rm pan
 rm pan.*
 rm *.tmp
+rm *.trail
