@@ -1,5 +1,3 @@
 ltl p1 {
-([] !a)
-&&
-([] !a)
+([] (insideCriticalSection < semaphoreThreshold))
  };
