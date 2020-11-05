@@ -1,63 +1,24 @@
-byte semaphoreThreshold = 1;
-byte insideCriticalSection = 0;
+int semaphoreThreshold = 1;
+int insideCriticalSection = 0;
 
-active proctype main1(){
-loop:
-    (semaphoreThreshold > 0);
-    semaphoreThreshold = semaphoreThreshold - 1;
+proctype main(int procNum){
+    atomic {
+        (semaphoreThreshold > 0);
+        semaphoreThreshold = semaphoreThreshold - 1
+        printf("proc %d in\n", procNum);
+    }
     insideCriticalSection = insideCriticalSection + 1;
     insideCriticalSection = insideCriticalSection - 1;
-    semaphoreThreshold = semaphoreThreshold +1;
-    goto loop;
+    atomic {
+        semaphoreThreshold = semaphoreThreshold + 1;
+        printf("proc %d out\n", procNum);
+    }
 };
 
-active proctype main2(){
-loop:
-    (semaphoreThreshold > 0);
-    semaphoreThreshold = semaphoreThreshold - 1;
-    insideCriticalSection = insideCriticalSection + 1;
-    insideCriticalSection = insideCriticalSection - 1;
-    semaphoreThreshold =semaphoreThreshold + 1;
-    goto loop;
-};
-
-active proctype main3(){
-loop:
-    (semaphoreThreshold > 0);
-    semaphoreThreshold = semaphoreThreshold - 1;
-    insideCriticalSection = insideCriticalSection + 1;
-    insideCriticalSection = insideCriticalSection - 1;
-    semaphoreThreshold = semaphoreThreshold + 1;
-    goto loop;
-};
-
-active proctype main4(){
-loop:
-    (semaphoreThreshold > 0);
-    semaphoreThreshold = semaphoreThreshold - 1;
-    insideCriticalSection = insideCriticalSection + 1;
-    insideCriticalSection = insideCriticalSection - 1;
-    semaphoreThreshold = semaphoreThreshold + 1;
-    goto loop;
-};
-
-active proctype main5(){
-loop:
-    (semaphoreThreshold > 0);
-    semaphoreThreshold = semaphoreThreshold - 1;
-    insideCriticalSection = insideCriticalSection + 1;
-    insideCriticalSection = insideCriticalSection - 1;
-    semaphoreThreshold =semaphoreThreshold + 1;
-    goto loop;
-};
-
-atomic{
-    semaphoreThreshold = semaphoreThreshold + 1;
-    semaphoreThreshold = semaphoreThreshold - 1;
-    insideCriticalSection = insideCriticalSection + 1;
-    insideCriticalSection = insideCriticalSection - 1;
+init {
+    local int counter = 100;
+    do
+    :: (counter != 0) -> run main(counter); counter--;
+    :: (counter == 0) -> break
+    od
 }
-
-
-
-
