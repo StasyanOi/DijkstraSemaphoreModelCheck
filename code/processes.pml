@@ -16,7 +16,7 @@ proctype main(int procNum){
 };
 
 init {
-    local int counter = 100;
+    local int counter = 10;
     do
     :: (counter != 0) -> run main(counter); counter--;
     :: (counter == 0) -> break
