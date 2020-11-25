@@ -3,7 +3,7 @@
 ///////////////////////
 
 //ИНИЦИАЛИЗАЦИЯ СЕМАФОРА
-int semaphoreThreshold = 4;
+int semaphoreThreshold = 3;
 
 //СОЗДАНИЕ ТАЛОНОВ
 int semaphoreTokens = semaphoreThreshold;
@@ -94,12 +94,12 @@ ltl task2
 
 ltl task3
 {
-    ((semaphoreThreshold == 3) -> [] !(processesInsideCriticalSection <= 3))
+    ((semaphoreThreshold == 3) -> [] (processesInsideCriticalSection <= 3))
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 ltl task4
 {
-    ((semaphoreThreshold == 4) -> ([] !(processesInsideCriticalSection > 3)))
+    ((semaphoreThreshold == 3) -> ([] !(processesInsideCriticalSection > 3)))
 }
