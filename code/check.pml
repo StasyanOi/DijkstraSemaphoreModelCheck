@@ -97,21 +97,14 @@ ltl task2
 ////////////////////////////////////////////////////////////////////////
 
 ltl task3
-{ ([] (semaphoreThreshold == 3))
-      &&
-  (<>(processesInsideCriticalSection == 0))
-      &&
-  (<>(processesInsideCriticalSection == 1))
-        &&
-  (<>(processesInsideCriticalSection == 2))
-        &&
-  (<>(processesInsideCriticalSection == 3))
+{
+    (<>(processesInsideCriticalSection == 3))
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 ltl task4
-{ ([] (semaphoreThreshold == 3))
-      &&
-  ([](processesInsideCriticalSection < 4))
+{
+    (<>(processesInsideCriticalSection == 4))
 }
+//условие сейчас не проходит
