@@ -20,7 +20,7 @@ int wasInCriticalSection [5];
 inline takeSemaphoreToken() {
     atomic {
             (semaphoreTokens > 0);
-            semaphoreTokens = semaphoreTokens - 1
+            semaphoreTokens = semaphoreTokens - 1;
             printf("Acquire token. Tokens left %d\n", semaphoreTokens);
         }
 }
@@ -40,17 +40,14 @@ inline releaseSemaphoreToken() {
 //ОХРАНЯЕМЫЙ РЕСУРС///////////////////////////////////////////////////////////////////////////////
 ///////////////////////
 
-inline doWork() {
-    atomic {
-        workCounter = workCounter + 1;
-    }
-}
-
 inline criticalSectionBlock(processId) {
-    processesInsideCriticalSection = processesInsideCriticalSection + 1;
-    doWork();
+    atomic {
+        processesInsideCriticalSection = processesInsideCriticalSection + 1;
+    }
     wasInCriticalSection[processId] = 1;
-    processesInsideCriticalSection = processesInsideCriticalSection - 1;
+    atomic {
+        processesInsideCriticalSection = processesInsideCriticalSection - 1;
+    }
 }
 
 inline useResource(processId) {
@@ -68,12 +65,8 @@ int globalProcIndex = 0;
 //ШАБЛОН ПРОЦЕССА
 active [5] proctype main(){
 
-    local int thisProcIndex;
-    atomic {
-        thisProcIndex = globalProcIndex;
-        globalProcIndex = globalProcIndex + 1;
-        printf("%d\n", thisProcIndex);
-    }
-
-    useResource(thisProcIndex);
+    printf("%d\n", _pid);
+    useResource(_pid);
 };
+
+
