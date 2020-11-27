@@ -22,134 +22,138 @@ settable(void)
 {	Trans *T;
 	Trans *settr(int, int, int, int, int, char *, int, int, int);
 
-	trans = (Trans ***) emalloc(7*sizeof(Trans **));
-
-	/* proctype 5: task5 */
-
-	trans[5] = (Trans **) emalloc(7*sizeof(Trans *));
-
-	trans[5][4]	= settr(66,0,3,1,0,".(goto)", 0, 2, 0);
-	T = trans[5][3] = settr(65,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(65,0,1,0,0,"DO", 0, 2, 0);
-	trans[5][1]	= settr(63,0,3,3,0,"(!((processesInsideCriticalSection>9)))", 1, 2, 0);
-	trans[5][2]	= settr(64,0,3,1,0,"goto T0_init", 0, 2, 0);
-	trans[5][5]	= settr(67,0,6,1,0,"break", 0, 2, 0);
-	trans[5][6]	= settr(68,0,0,4,4,"-end-", 0, 3500, 0);
+	trans = (Trans ***) emalloc(6*sizeof(Trans **));
 
 	/* proctype 4: task4 */
 
-	trans[4] = (Trans **) emalloc(11*sizeof(Trans *));
+	trans[4] = (Trans **) emalloc(26*sizeof(Trans *));
 
-	trans[4][7]	= settr(59,0,6,1,0,".(goto)", 0, 2, 0);
-	T = trans[4][6] = settr(58,0,0,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(58,0,3,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(58,0,4,0,0,"DO", 0, 2, 0);
-	T = trans[ 4][3] = settr(55,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(55,2,1,0,0,"ATOMIC", 1, 2, 0);
-	trans[4][1]	= settr(53,0,6,5,5,"(!((!((semaphoreThreshold==3))||!((processesInsideCriticalSection==4)))))", 1, 2, 0); /* m: 2 -> 6,0 */
-	reached4[2] = 1;
-	trans[4][2]	= settr(0,0,0,0,0,"assert(!(!((!((semaphoreThreshold==3))||!((processesInsideCriticalSection==4))))))",0,0,0);
-	trans[4][4]	= settr(56,0,6,1,0,"(1)", 0, 2, 0);
-	trans[4][5]	= settr(57,0,6,1,0,"goto T0_init", 0, 2, 0);
-	trans[4][8]	= settr(60,0,9,1,0,"break", 0, 2, 0);
-	trans[4][9]	= settr(61,0,10,1,0,"(1)", 0, 2, 0);
-	trans[4][10]	= settr(62,0,0,6,6,"-end-", 0, 3500, 0);
+	trans[4][9]	= settr(58,0,8,1,0,".(goto)", 0, 2, 0);
+	T = trans[4][8] = settr(57,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(57,0,1,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(57,0,5,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(57,0,6,0,0,"DO", 0, 2, 0);
+	trans[4][1]	= settr(50,0,13,3,0,"(!((semaphoreTokens==-(1))))", 1, 2, 0);
+	trans[4][2]	= settr(51,0,13,1,0,"goto accept_S2", 0, 2, 0);
+	T = trans[ 4][5] = settr(54,2,0,0,0,"ATOMIC", 1, 2, 0);
+	T->nxt	= settr(54,2,3,0,0,"ATOMIC", 1, 2, 0);
+	trans[4][3]	= settr(52,0,8,4,4,"(!((semaphoreTokens<=3)))", 1, 2, 0); /* m: 4 -> 8,0 */
+	reached4[4] = 1;
+	trans[4][4]	= settr(0,0,0,0,0,"assert(!(!((semaphoreTokens<=3))))",0,0,0);
+	trans[4][6]	= settr(55,0,21,1,0,"(1)", 0, 2, 0);
+	trans[4][7]	= settr(56,0,21,1,0,"goto T0_S5", 0, 2, 0);
+	trans[4][10]	= settr(59,0,13,1,0,"break", 0, 2, 0);
+	trans[4][14]	= settr(63,0,13,1,0,".(goto)", 0, 2, 0);
+	T = trans[4][13] = settr(62,0,0,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(62,0,11,0,0,"DO", 0, 2, 0);
+	trans[4][11]	= settr(60,0,13,5,0,"(!((semaphoreTokens==-(1))))", 1, 2, 0);
+	trans[4][12]	= settr(61,0,13,1,0,"goto accept_S2", 0, 2, 0);
+	trans[4][15]	= settr(64,0,21,1,0,"break", 0, 2, 0);
+	trans[4][22]	= settr(71,0,21,1,0,".(goto)", 0, 2, 0);
+	T = trans[4][21] = settr(70,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(70,0,18,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(70,0,19,0,0,"DO", 0, 2, 0);
+	T = trans[ 4][18] = settr(67,2,0,0,0,"ATOMIC", 1, 2, 0);
+	T->nxt	= settr(67,2,16,0,0,"ATOMIC", 1, 2, 0);
+	trans[4][16]	= settr(65,0,21,6,6,"(!((semaphoreTokens<=3)))", 1, 2, 0); /* m: 17 -> 21,0 */
+	reached4[17] = 1;
+	trans[4][17]	= settr(0,0,0,0,0,"assert(!(!((semaphoreTokens<=3))))",0,0,0);
+	trans[4][19]	= settr(68,0,21,1,0,"(1)", 0, 2, 0);
+	trans[4][20]	= settr(69,0,21,1,0,"goto T0_S5", 0, 2, 0);
+	trans[4][23]	= settr(72,0,24,1,0,"break", 0, 2, 0);
+	trans[4][24]	= settr(73,0,25,1,0,"(1)", 0, 2, 0);
+	trans[4][25]	= settr(74,0,0,7,7,"-end-", 0, 3500, 0);
 
 	/* proctype 3: task3 */
 
-	trans[3] = (Trans **) emalloc(19*sizeof(Trans *));
+	trans[3] = (Trans **) emalloc(11*sizeof(Trans *));
 
-	trans[3][7]	= settr(41,0,6,1,0,".(goto)", 0, 2, 0);
-	T = trans[3][6] = settr(40,0,0,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(40,0,3,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(40,0,4,0,0,"DO", 0, 2, 0);
-	T = trans[ 3][3] = settr(37,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(37,2,1,0,0,"ATOMIC", 1, 2, 0);
-	trans[3][1]	= settr(35,0,6,7,7,"((!(!((semaphoreThreshold==3)))&&!((processesInsideCriticalSection<=3))))", 1, 2, 0); /* m: 2 -> 6,0 */
+	trans[3][7]	= settr(46,0,6,1,0,".(goto)", 0, 2, 0);
+	T = trans[3][6] = settr(45,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(45,0,3,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(45,0,4,0,0,"DO", 0, 2, 0);
+	T = trans[ 3][3] = settr(42,2,0,0,0,"ATOMIC", 1, 2, 0);
+	T->nxt	= settr(42,2,1,0,0,"ATOMIC", 1, 2, 0);
+	trans[3][1]	= settr(40,0,6,8,8,"((!((semaphoreTokens!=-(1)))||!((semaphoreTokens<=3))))", 1, 2, 0); /* m: 2 -> 6,0 */
 	reached3[2] = 1;
-	trans[3][2]	= settr(0,0,0,0,0,"assert(!((!(!((semaphoreThreshold==3)))&&!((processesInsideCriticalSection<=3)))))",0,0,0);
-	trans[3][4]	= settr(38,0,14,8,0,"(!(!((semaphoreThreshold==3))))", 1, 2, 0);
-	trans[3][5]	= settr(39,0,14,1,0,"goto T0_S3", 0, 2, 0);
-	trans[3][8]	= settr(42,0,14,1,0,"break", 0, 2, 0);
-	trans[3][15]	= settr(49,0,14,1,0,".(goto)", 0, 2, 0);
-	T = trans[3][14] = settr(48,0,0,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(48,0,11,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(48,0,12,0,0,"DO", 0, 2, 0);
-	T = trans[ 3][11] = settr(45,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(45,2,9,0,0,"ATOMIC", 1, 2, 0);
-	trans[3][9]	= settr(43,0,14,9,9,"(!((processesInsideCriticalSection<=3)))", 1, 2, 0); /* m: 10 -> 14,0 */
-	reached3[10] = 1;
-	trans[3][10]	= settr(0,0,0,0,0,"assert(!(!((processesInsideCriticalSection<=3))))",0,0,0);
-	trans[3][12]	= settr(46,0,14,1,0,"(1)", 0, 2, 0);
-	trans[3][13]	= settr(47,0,14,1,0,"goto T0_S3", 0, 2, 0);
-	trans[3][16]	= settr(50,0,17,1,0,"break", 0, 2, 0);
-	trans[3][17]	= settr(51,0,18,1,0,"(1)", 0, 2, 0);
-	trans[3][18]	= settr(52,0,0,10,10,"-end-", 0, 3500, 0);
+	trans[3][2]	= settr(0,0,0,0,0,"assert(!((!((semaphoreTokens!=-(1)))||!((semaphoreTokens<=3)))))",0,0,0);
+	trans[3][4]	= settr(43,0,6,1,0,"(1)", 0, 2, 0);
+	trans[3][5]	= settr(44,0,6,1,0,"goto T0_init", 0, 2, 0);
+	trans[3][8]	= settr(47,0,9,1,0,"break", 0, 2, 0);
+	trans[3][9]	= settr(48,0,10,1,0,"(1)", 0, 2, 0);
+	trans[3][10]	= settr(49,0,0,9,9,"-end-", 0, 3500, 0);
 
 	/* proctype 2: task2 */
 
 	trans[2] = (Trans **) emalloc(7*sizeof(Trans *));
 
-	trans[2][4]	= settr(32,0,3,1,0,".(goto)", 0, 2, 0);
-	T = trans[2][3] = settr(31,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(31,0,1,0,0,"DO", 0, 2, 0);
-	trans[2][1]	= settr(29,0,3,11,0,"(!((((((wasInCriticalSection[0]==1)&&(wasInCriticalSection[1]==1))&&(wasInCriticalSection[2]==1))&&(wasInCriticalSection[3]==1))&&(wasInCriticalSection[4]==1))))", 1, 2, 0);
-	trans[2][2]	= settr(30,0,3,1,0,"goto T0_init", 0, 2, 0);
-	trans[2][5]	= settr(33,0,6,1,0,"break", 0, 2, 0);
-	trans[2][6]	= settr(34,0,0,12,12,"-end-", 0, 3500, 0);
+	trans[2][4]	= settr(37,0,3,1,0,".(goto)", 0, 2, 0);
+	T = trans[2][3] = settr(36,0,0,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(36,0,1,0,0,"DO", 0, 2, 0);
+	trans[2][1]	= settr(34,0,3,10,0,"(!((((((wasInCriticalSection[0]==1)&&(wasInCriticalSection[1]==1))&&(wasInCriticalSection[2]==1))&&(wasInCriticalSection[3]==1))&&(wasInCriticalSection[4]==1))))", 1, 2, 0);
+	trans[2][2]	= settr(35,0,3,1,0,"goto T0_init", 0, 2, 0);
+	trans[2][5]	= settr(38,0,6,1,0,"break", 0, 2, 0);
+	trans[2][6]	= settr(39,0,0,11,11,"-end-", 0, 3500, 0);
 
 	/* proctype 1: task1 */
 
 	trans[1] = (Trans **) emalloc(11*sizeof(Trans *));
 
-	trans[1][7]	= settr(25,0,6,1,0,".(goto)", 0, 2, 0);
-	T = trans[1][6] = settr(24,0,0,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(24,0,3,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(24,0,4,0,0,"DO", 0, 2, 0);
-	T = trans[ 1][3] = settr(21,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(21,2,1,0,0,"ATOMIC", 1, 2, 0);
-	trans[1][1]	= settr(19,0,6,13,13,"((!((processesInsideCriticalSection<=1))||!((semaphoreThreshold==1))))", 1, 2, 0); /* m: 2 -> 6,0 */
+	trans[1][7]	= settr(30,0,6,1,0,".(goto)", 0, 2, 0);
+	T = trans[1][6] = settr(29,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(29,0,3,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(29,0,4,0,0,"DO", 0, 2, 0);
+	T = trans[ 1][3] = settr(26,2,0,0,0,"ATOMIC", 1, 2, 0);
+	T->nxt	= settr(26,2,1,0,0,"ATOMIC", 1, 2, 0);
+	trans[1][1]	= settr(24,0,6,12,12,"((!((semaphoreThreshold==1))||!((semaphoreTokens<=1))))", 1, 2, 0); /* m: 2 -> 6,0 */
 	reached1[2] = 1;
-	trans[1][2]	= settr(0,0,0,0,0,"assert(!((!((processesInsideCriticalSection<=1))||!((semaphoreThreshold==1)))))",0,0,0);
-	trans[1][4]	= settr(22,0,6,1,0,"(1)", 0, 2, 0);
-	trans[1][5]	= settr(23,0,6,1,0,"goto T0_init", 0, 2, 0);
-	trans[1][8]	= settr(26,0,9,1,0,"break", 0, 2, 0);
-	trans[1][9]	= settr(27,0,10,1,0,"(1)", 0, 2, 0);
-	trans[1][10]	= settr(28,0,0,14,14,"-end-", 0, 3500, 0);
+	trans[1][2]	= settr(0,0,0,0,0,"assert(!((!((semaphoreThreshold==1))||!((semaphoreTokens<=1)))))",0,0,0);
+	trans[1][4]	= settr(27,0,6,1,0,"(1)", 0, 2, 0);
+	trans[1][5]	= settr(28,0,6,1,0,"goto T0_init", 0, 2, 0);
+	trans[1][8]	= settr(31,0,9,1,0,"break", 0, 2, 0);
+	trans[1][9]	= settr(32,0,10,1,0,"(1)", 0, 2, 0);
+	trans[1][10]	= settr(33,0,0,13,13,"-end-", 0, 3500, 0);
 
 	/* proctype 0: main */
 
-	trans[0] = (Trans **) emalloc(20*sizeof(Trans *));
+	trans[0] = (Trans **) emalloc(25*sizeof(Trans *));
 
-	trans[0][1]	= settr(0,0,17,15,0,"printf('%d\\n',_pid)", 0, 2, 0);
-	T = trans[ 0][17] = settr(16,0,0,0,0,"sub-sequence", 0, 2, 0);
-	T->nxt	= settr(16,0,6,0,0,"sub-sequence", 0, 2, 0);
+	trans[0][1]	= settr(0,0,22,14,0,"printf('%d\\n',_pid)", 0, 2, 0);
+	T = trans[ 0][22] = settr(21,0,0,0,0,"sub-sequence", 0, 2, 0);
+	T->nxt	= settr(21,0,6,0,0,"sub-sequence", 0, 2, 0);
 	T = trans[ 0][6] = settr(5,0,0,0,0,"sub-sequence", 0, 2, 0);
 	T->nxt	= settr(5,0,5,0,0,"sub-sequence", 0, 2, 0);
 	T = trans[ 0][5] = settr(4,2,0,0,0,"ATOMIC", 1, 2, 0);
 	T->nxt	= settr(4,2,2,0,0,"ATOMIC", 1, 2, 0);
-	trans[0][2]	= settr(1,4,12,16,16,"((semaphoreTokens>0))", 1, 2, 0); /* m: 3 -> 12,0 */
+	trans[0][2]	= settr(1,4,17,15,15,"((semaphoreTokens>0))", 1, 2, 0); /* m: 3 -> 17,0 */
 	reached0[3] = 1;
 	trans[0][3]	= settr(0,0,0,0,0,"semaphoreTokens = (semaphoreTokens-1)",0,0,0);
 	trans[0][4]	= settr(0,0,0,0,0,"printf('Acquire token. Tokens left %d\\n',semaphoreTokens)",0,0,0);
-	T = trans[ 0][12] = settr(11,0,0,0,0,"sub-sequence", 0, 2, 0);
-	T->nxt	= settr(11,0,8,0,0,"sub-sequence", 0, 2, 0);
-	T = trans[ 0][8] = settr(7,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(7,2,7,0,0,"ATOMIC", 1, 2, 0);
-	trans[0][7]	= settr(6,0,9,17,17,"processesInsideCriticalSection = (processesInsideCriticalSection+1)", 1, 2, 0);
-	trans[0][9]	= settr(8,0,11,18,18,"wasInCriticalSection[_pid] = 1", 1, 2, 0);
-	T = trans[ 0][11] = settr(10,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(10,2,10,0,0,"ATOMIC", 1, 2, 0);
-	trans[0][10]	= settr(9,0,16,19,19,"processesInsideCriticalSection = (processesInsideCriticalSection-1)", 1, 2, 0);
-	T = trans[ 0][16] = settr(15,0,0,0,0,"sub-sequence", 0, 2, 0);
-	T->nxt	= settr(15,0,15,0,0,"sub-sequence", 0, 2, 0);
-	T = trans[ 0][15] = settr(14,2,0,0,0,"ATOMIC", 1, 2, 0);
-	T->nxt	= settr(14,2,13,0,0,"ATOMIC", 1, 2, 0);
-	trans[0][13]	= settr(12,4,18,20,20,"semaphoreTokens = (semaphoreTokens+1)", 1, 2, 0); /* m: 14 -> 0,18 */
-	reached0[14] = 1;
-	trans[0][14]	= settr(0,0,0,0,0,"printf('Release token. Tokens left %d\\n',semaphoreTokens)",0,0,0);
-	trans[0][18]	= settr(17,0,19,21,0,"printf('end\\n')", 0, 2, 0);
-	trans[0][19]	= settr(18,0,0,22,22,"-end-", 0, 3500, 0);
+	T = trans[ 0][17] = settr(16,0,0,0,0,"sub-sequence", 0, 2, 0);
+	T->nxt	= settr(16,0,15,0,0,"sub-sequence", 0, 2, 0);
+	T = trans[ 0][15] = settr(14,0,0,0,0,"sub-sequence", 0, 2, 0);
+	T->nxt	= settr(14,0,7,0,0,"sub-sequence", 0, 2, 0);
+	trans[0][7]	= settr(6,0,12,16,16,"count = 100", 0, 2, 0);
+	trans[0][13]	= settr(12,0,12,1,0,".(goto)", 0, 2, 0);
+	T = trans[0][12] = settr(11,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(11,0,8,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(11,0,10,0,0,"DO", 0, 2, 0);
+	trans[0][8]	= settr(7,0,12,17,17,"((count>0))", 0, 2, 0); /* m: 9 -> 12,0 */
+	reached0[9] = 1;
+	trans[0][9]	= settr(0,0,0,0,0,"count = (count-1)",0,0,0);
+	trans[0][10]	= settr(9,0,16,18,18,"((count==0))", 0, 2, 0);
+	trans[0][11]	= settr(10,0,16,1,0,"goto :b0", 0, 2, 0);
+	trans[0][14]	= settr(13,0,16,1,0,"break", 0, 2, 0);
+	trans[0][16]	= settr(15,0,21,19,19,"wasInCriticalSection[_pid] = 1", 1, 2, 0);
+	T = trans[ 0][21] = settr(20,0,0,0,0,"sub-sequence", 0, 2, 0);
+	T->nxt	= settr(20,0,20,0,0,"sub-sequence", 0, 2, 0);
+	T = trans[ 0][20] = settr(19,2,0,0,0,"ATOMIC", 1, 2, 0);
+	T->nxt	= settr(19,2,18,0,0,"ATOMIC", 1, 2, 0);
+	trans[0][18]	= settr(17,4,23,20,20,"semaphoreTokens = (semaphoreTokens+1)", 1, 2, 0); /* m: 19 -> 0,23 */
+	reached0[19] = 1;
+	trans[0][19]	= settr(0,0,0,0,0,"printf('Release token. Tokens left %d\\n',semaphoreTokens)",0,0,0);
+	trans[0][23]	= settr(22,0,24,21,0,"printf('end\\n')", 0, 2, 0);
+	trans[0][24]	= settr(23,0,0,22,22,"-end-", 0, 3500, 0);
 	/* np_ demon: */
 	trans[_NP_] = (Trans **) emalloc(3*sizeof(Trans *));
 	T = trans[_NP_][0] = settr(9997,0,1,_T5,0,"(np_)", 1,2,0);

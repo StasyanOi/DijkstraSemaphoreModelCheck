@@ -1,7 +1,7 @@
-never task1 {    /* !(([] ((semaphoreThreshold==1))) && ([] ((processesInsideCriticalSection<=1)))) */
+never task1 {    /* !(([] ((semaphoreThreshold==1))) && ([] ((semaphoreTokens<=1)))) */
 T0_init:
 	do
-	:: atomic { (((! (((processesInsideCriticalSection<=1)))) || (! (((semaphoreThreshold==1)))))) -> assert(!(((! (((processesInsideCriticalSection<=1)))) || (! (((semaphoreThreshold==1))))))) }
+	:: atomic { (((! (((semaphoreThreshold==1)))) || (! (((semaphoreTokens<=1)))))) -> assert(!(((! (((semaphoreThreshold==1)))) || (! (((semaphoreTokens<=1))))))) }
 	:: (1) -> goto T0_init
 	od;
 accept_all:
@@ -14,33 +14,31 @@ T0_init:
 	:: (! (((((((wasInCriticalSection[0]==1)) && ((wasInCriticalSection[1]==1))) && ((wasInCriticalSection[2]==1))) && ((wasInCriticalSection[3]==1))) && ((wasInCriticalSection[4]==1))))) -> goto T0_init
 	od;
 }
-never task3 {    /* !((! ((semaphoreThreshold==3))) || ([] ((processesInsideCriticalSection<=3)))) */
+never task3 {    /* !(([] ((semaphoreTokens!=-(1)))) && ([] ((semaphoreTokens<=3)))) */
 T0_init:
 	do
-	:: atomic { (! ((! ((semaphoreThreshold==3)))) && ! (((processesInsideCriticalSection<=3)))) -> assert(!(! ((! ((semaphoreThreshold==3)))) && ! (((processesInsideCriticalSection<=3))))) }
-	:: (! ((! ((semaphoreThreshold==3))))) -> goto T0_S3
-	od;
-T0_S3:
-	do
-	:: atomic { (! (((processesInsideCriticalSection<=3)))) -> assert(!(! (((processesInsideCriticalSection<=3))))) }
-	:: (1) -> goto T0_S3
-	od;
-accept_all:
-	skip
-}
-never task4 {    /* !([] ((! ((semaphoreThreshold==3))) || (! ((processesInsideCriticalSection==4))))) */
-T0_init:
-	do
-	:: atomic { (! (((! ((semaphoreThreshold==3))) || (! ((processesInsideCriticalSection==4)))))) -> assert(!(! (((! ((semaphoreThreshold==3))) || (! ((processesInsideCriticalSection==4))))))) }
+	:: atomic { (((! (((semaphoreTokens!=-(1))))) || (! (((semaphoreTokens<=3)))))) -> assert(!(((! (((semaphoreTokens!=-(1))))) || (! (((semaphoreTokens<=3))))))) }
 	:: (1) -> goto T0_init
 	od;
 accept_all:
 	skip
 }
-never task5 {    /* !(<> ((processesInsideCriticalSection>9))) */
-accept_init:
+never task4 {    /* !((<> ((semaphoreTokens==-(1)))) && ([] ((semaphoreTokens<=3)))) */
 T0_init:
 	do
-	:: (! (((processesInsideCriticalSection>9)))) -> goto T0_init
+	:: (! (((semaphoreTokens==-(1))))) -> goto accept_S2
+	:: atomic { (! (((semaphoreTokens<=3)))) -> assert(!(! (((semaphoreTokens<=3))))) }
+	:: (1) -> goto T0_S5
 	od;
+accept_S2:
+	do
+	:: (! (((semaphoreTokens==-(1))))) -> goto accept_S2
+	od;
+T0_S5:
+	do
+	:: atomic { (! (((semaphoreTokens<=3)))) -> assert(!(! (((semaphoreTokens<=3))))) }
+	:: (1) -> goto T0_S5
+	od;
+accept_all:
+	skip
 }

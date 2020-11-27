@@ -2,7 +2,7 @@
 #define PAN_H
 
 #define SpinVersion	"Spin Version 6.5.1 -- 31 July 2020"
-#define PanSource	"./code/verify.pml"
+#define PanSource	"./code/processes.pml"
 
 #define G_long	8
 #define G_int	4
@@ -121,15 +121,15 @@
 #endif
 #ifdef NP
 	#define HAS_NP	2
-	#define VERI	6	/* np_ */
+	#define VERI	5	/* np_ */
 #endif
 #if defined(NOCLAIM) && defined(NP)
 	#undef NOCLAIM
 #endif
 #ifndef NOCLAIM
-	#define NCLAIMS	5
+	#define NCLAIMS	4
 	#ifndef NP
-		#define VERI	5
+		#define VERI	4
 	#endif
 #endif
 
@@ -139,43 +139,36 @@ typedef struct S_F_MAP {
 	int upto;
 } S_F_MAP;
 
-#define _nstates5	7	/* task5 */
-#define minseq5	63
-#define maxseq5	68
-#define _endstate5	6
+#define _nstates4	26	/* task4 */
+#define minseq4	50
+#define maxseq4	74
+#define _endstate4	25
 
-#define _nstates4	11	/* task4 */
-#define minseq4	53
-#define maxseq4	62
-#define _endstate4	10
-
-#define _nstates3	19	/* task3 */
-#define minseq3	35
-#define maxseq3	52
-#define _endstate3	18
+#define _nstates3	11	/* task3 */
+#define minseq3	40
+#define maxseq3	49
+#define _endstate3	10
 
 #define _nstates2	7	/* task2 */
-#define minseq2	29
-#define maxseq2	34
+#define minseq2	34
+#define maxseq2	39
 #define _endstate2	6
 
 #define _nstates1	11	/* task1 */
-#define minseq1	19
-#define maxseq1	28
+#define minseq1	24
+#define maxseq1	33
 #define _endstate1	10
 
-#define _nstates0	20	/* main */
+#define _nstates0	25	/* main */
 #define minseq0	0
-#define maxseq0	18
-#define _endstate0	19
+#define maxseq0	23
+#define _endstate0	24
 
-extern short src_ln5[];
 extern short src_ln4[];
 extern short src_ln3[];
 extern short src_ln2[];
 extern short src_ln1[];
 extern short src_ln0[];
-extern S_F_MAP src_file5[];
 extern S_F_MAP src_file4[];
 extern S_F_MAP src_file3[];
 extern S_F_MAP src_file2[];
@@ -198,16 +191,6 @@ extern S_F_MAP src_file0[];
 		#define NCORE	1
 	#endif
 #endif
-
-typedef struct P5 { /* task5 */
-	unsigned _pid : 8;  /* 0..255 */
-	unsigned _t   : 4; /* proctype */
-	unsigned _p   : 6; /* state    */
-#ifdef HAS_PRIORITY
-	unsigned _priority : 8; /* 0..255 */
-#endif
-} P5;
-#define Air5	(sizeof(P5) - 3)
 
 typedef struct P4 { /* task4 */
 	unsigned _pid : 8;  /* 0..255 */
@@ -257,35 +240,36 @@ typedef struct P0 { /* main */
 #ifdef HAS_PRIORITY
 	unsigned _priority : 8; /* 0..255 */
 #endif
+	int _1_1_2_2_count;
 } P0;
-#define Air0	(sizeof(P0) - 3)
+#define Air0	(sizeof(P0) - Offsetof(P0, _1_1_2_2_count) - 1*sizeof(int))
 
-typedef struct P6 { /* np_ */
+typedef struct P5 { /* np_ */
 	unsigned _pid : 8;  /* 0..255 */
 	unsigned _t   : 4; /* proctype */
 	unsigned _p   : 6; /* state    */
 #ifdef HAS_PRIORITY
 	unsigned _priority : 8; /* 0..255 */
 #endif
-} P6;
-#define Air6	(sizeof(P6) - 3)
+} P5;
+#define Air5	(sizeof(P5) - 3)
 
 
 #ifndef NOCLAIM
  #ifndef NP
 	#undef VERI
-	#define VERI	7
+	#define VERI	6
  #endif
-	#define Pclaim	P7
+	#define Pclaim	P6
 
-typedef struct P7 {
+typedef struct P6 {
 	unsigned _pid : 8; /* always zero */
 	unsigned _t   : 4; /* active-claim type  */
 	unsigned _p   : 6; /* active-claim state */
-	unsigned _n   : 4; /* active-claim index */
+	unsigned _n   : 3; /* active-claim index */
 	uchar c_cur[NCLAIMS]; /* claim-states */
-} P7;
-	#define Air7	(0)
+} P6;
+	#define Air6	(0)
 
 #endif
 #if defined(BFS) && defined(REACH)
@@ -476,7 +460,6 @@ typedef struct State {
 #endif
 	int semaphoreThreshold;
 	int semaphoreTokens;
-	int processesInsideCriticalSection;
 	int wasInCriticalSection[5];
 #ifdef TRIX
 	/* room for 512 proc+chan ptrs, + safety margin */
@@ -499,18 +482,15 @@ typedef struct TRIX_v6 {
 #endif
 
 #define HAS_TRACK	0
-/* hidden variable: */	int workCounter;
-/* hidden variable: */	int globalProcIndex;
 #define FORWARD_MOVES	"pan.m"
 #define BACKWARD_MOVES	"pan.b"
 #define TRANSITIONS	"pan.t"
-#define _NP_	6
-#define _nstates6	3 /* np_ */
-#define _endstate6	2 /* np_ */
+#define _NP_	5
+#define _nstates5	3 /* np_ */
+#define _endstate5	2 /* np_ */
 
-#define _start6	0 /* np_ */
-#define _start5	3
-#define _start4	6
+#define _start5	0 /* np_ */
+#define _start4	8
 #define _start3	6
 #define _start2	3
 #define _start1	6

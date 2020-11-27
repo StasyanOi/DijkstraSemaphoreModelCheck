@@ -8,12 +8,6 @@ int semaphoreThreshold = 3;
 //СОЗДАНИЕ ТАЛОНОВ
 int semaphoreTokens = semaphoreThreshold;
 
-//СОЗДАНИЯ СЧЕТЧИКА ПРОЦЕССОВ В КРИТ. СЕКЦИИ
-int processesInsideCriticalSection = 0;
-
-//СЧЕТЧИК РАБОТЫ
-int workCounter = 0;
-
 //ФЛАГИ ДЛЯ ПРОЦЕССОВ ВНУТРИ КРИТ. СЕКЦИИ
 int wasInCriticalSection [5];
 
@@ -40,14 +34,17 @@ inline releaseSemaphoreToken() {
 //ОХРАНЯЕМЫЙ РЕСУРС///////////////////////////////////////////////////////////////////////////////
 ///////////////////////
 
+inline doWork() {
+    local int count = 100;
+    do
+    	:: (count > 0) -> count--
+    	:: (count == 0) -> break
+    od
+}
+
 inline criticalSectionBlock(processId) {
-    atomic {
-        processesInsideCriticalSection = processesInsideCriticalSection + 1;
-    }
+    doWork();
     wasInCriticalSection[processId] = 1;
-    atomic {
-        processesInsideCriticalSection = processesInsideCriticalSection - 1;
-    }
 }
 
 inline useResource(processId) {
@@ -59,9 +56,6 @@ inline useResource(processId) {
 //ОХРАНЯЕМЫЙ РЕСУРС///////////////////////////////////////////////////////////////////////////////
 ///////////////////////
 
-//ИНДЕКС ПРОЦЕССОВ
-int globalProcIndex = 0;
-
 //ШАБЛОН ПРОЦЕССА
 active [5] proctype main(){
 
@@ -69,5 +63,41 @@ active [5] proctype main(){
     useResource(_pid);
     end: printf("end\n");
 };
+
+
+
+////////////////////////////////////////////////////////////////////////
+//ФОРМУЛЫ ЗАДАНИЯ
+////////////////////////////////////////////////////////////////////////
+
+ltl task1
+{ ([] (semaphoreThreshold == 1))
+    &&
+  ([] (semaphoreTokens <= 1))
+}
+
+////////////////////////////////////////////////////////////////////////
+
+ltl task2
+{ (<>(wasInCriticalSection[0] == 1 &&
+     wasInCriticalSection[1] == 1 &&
+     wasInCriticalSection[2] == 1 &&
+     wasInCriticalSection[3] == 1 &&
+     wasInCriticalSection[4] == 1))
+}
+
+////////////////////////////////////////////////////////////////////////
+
+ltl task3
+{
+    ([] (semaphoreTokens >= 0)) && ([] (semaphoreTokens <= 3))
+}
+
+////////////////////////////////////////////////////////////////////////
+
+ltl task4
+{
+   (<> (semaphoreTokens == -1))
+}
 
 
