@@ -29,5 +29,12 @@ ltl task3
 
 ltl task4
 {
-    ((semaphoreThreshold == 3) -> ([] !(processesInsideCriticalSection == 4)))
+    [] ((semaphoreThreshold == 3) -> (!(processesInsideCriticalSection == 4)))
+}
+
+////////////////////////////////////////////////////////////////////////
+
+ltl task5
+{
+    <> ( processesInsideCriticalSection > 9)
 }

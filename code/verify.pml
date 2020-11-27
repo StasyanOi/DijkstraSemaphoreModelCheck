@@ -67,6 +67,7 @@ active [5] proctype main(){
 
     printf("%d\n", _pid);
     useResource(_pid);
+    end: printf("end\n");
 };
 
 
@@ -101,5 +102,12 @@ ltl task3
 
 ltl task4
 {
-    ((semaphoreThreshold == 3) -> ([] !(processesInsideCriticalSection > 3)))
+    [] ((semaphoreThreshold == 3) -> (!(processesInsideCriticalSection == 4)))
+}
+
+////////////////////////////////////////////////////////////////////////
+
+ltl task5
+{
+    <> ( processesInsideCriticalSection > 9)
 }

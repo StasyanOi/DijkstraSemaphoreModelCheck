@@ -67,6 +67,7 @@ active [5] proctype main(){
 
     printf("%d\n", _pid);
     useResource(_pid);
+    end: printf("end\n");
 };
 
 
