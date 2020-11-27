@@ -1,15 +1,13 @@
 MODULE main
  VAR
    semaphore : {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-   waiting   : {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-   proc1     : process user(semaphore, waiting);
-   proc2     : process user(semaphore, waiting);
-   proc3     : process user(semaphore, waiting);
-   proc4     : process user(semaphore, waiting);
-   proc5     : process user(semaphore, waiting);
+   proc1     : process user(semaphore);
+   proc2     : process user(semaphore);
+   proc3     : process user(semaphore);
+   proc4     : process user(semaphore);
+   proc5     : process user(semaphore);
  ASSIGN
    init(semaphore) := 3;
-   init(waiting) := 0;
 
 LTLSPEC  (semaphore = 1 -> G (     (proc1.state = critical & proc2.state != critical & proc3.state != critical & proc4.state != critical & proc5.state != critical)
                                   | (proc1.state != critical & proc2.state = critical & proc3.state != critical & proc4.state != critical & proc5.state != critical)
@@ -17,27 +15,28 @@ LTLSPEC  (semaphore = 1 -> G (     (proc1.state = critical & proc2.state != crit
                                   | (proc1.state != critical & proc2.state != critical & proc3.state != critical & proc4.state = critical & proc5.state != critical)
                                   | (proc1.state != critical & proc2.state != critical & proc3.state != critical & proc4.state != critical & proc5.state = critical)))
 
-LTLSPEC  (                G ( waiting >= 0))
+LTLSPEC  (                G (         F (proc1.state = critical & proc2.state != critical & proc3.state != critical & proc4.state != critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state = critical & proc3.state != critical & proc4.state != critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state != critical & proc3.state = critical & proc4.state != critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state != critical & proc3.state != critical & proc4.state = critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state != critical & proc3.state != critical & proc4.state != critical & proc5.state = critical)))
 
-LTLSPEC  (                G (     F (proc1.state = critical)
-                                & F (proc2.state = critical)
-                                & F (proc3.state = critical)
-                                & F (proc4.state = critical)
-                                & F (proc5.state = critical)))
+LTLSPEC  (semaphore = 3 -> G (        F (proc1.state = critical & proc2.state != critical & proc3.state != critical & proc4.state != critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state = critical & proc3.state != critical & proc4.state != critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state != critical & proc3.state = critical & proc4.state != critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state != critical & proc3.state != critical & proc4.state = critical & proc5.state != critical)
+                                    & F (proc1.state != critical & proc2.state != critical & proc3.state != critical & proc4.state != critical & proc5.state = critical)))
 
 
-MODULE user(semaphore, waiting)
+MODULE user(semaphore)
  VAR
    state : {idle, entering, critical, exiting};
-   position : {-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
  ASSIGN
-   init(position) := -1;
    init(state) := idle;
    next(state) :=
      case
        state = idle                                          : entering;
-       state = entering & semaphore > 0 & position = waiting : critical;
-       state = entering & semaphore > 0 & position = -1      : critical;
+       state = entering & semaphore > 0                      : critical;
        state = critical                                      : {critical, exiting};
        state = exiting &  semaphore < 3                      : idle;
        TRUE                                                  : state;
@@ -47,18 +46,6 @@ MODULE user(semaphore, waiting)
        state = entering & semaphore > 0 : semaphore - 1;
        state = exiting & semaphore < 3  : semaphore + 1;
        TRUE             : semaphore;
-     esac;
-   next(waiting) :=
-     case
-       state = entering & semaphore < 0 & waiting >= 0 & position = -1  : waiting + 1;
-       state = entering & semaphore > 0 & waiting > 0 : waiting - 1;
-       TRUE             : waiting;
-     esac;
-   next(position) :=
-     case
-       state = entering & semaphore < 0 & waiting >= 0 & position = -1 : waiting;
-       state = entering & semaphore > 0 & waiting > 0 & position != -1 : -1;
-       TRUE             : position;
      esac;
 
  FAIRNESS
