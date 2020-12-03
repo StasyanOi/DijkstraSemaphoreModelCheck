@@ -8,30 +8,20 @@ MODULE main
    proc3     : process user(semaphore,3,apr);
    proc4     : process user(semaphore,4,apr);
  ASSIGN
-   init(semaphore) := 3;
+   init(semaphore) := 4;
    init(apr) := 0;
 
-LTLSPEC (F
-            ((proc0.state = critical1
-            | proc0.state = critical2
-            | proc0.state = critical3
-            | proc0.state = critical4
-            | proc0.state = critical5) & (proc1.state = critical1
-                                                     | proc1.state = critical2
-                                                     | proc1.state = critical3
-                                                     | proc1.state = critical4
-                                                     | proc1.state = critical5)))
 
-LTLSPEC (F (proc0.state = critical1) & F (proc1.state = critical1) & F (proc2.state = critical1)
-            & F (proc3.state = critical1) & F (proc4.state = critical1))
+LTLSPEC (F (proc0.state = critical2) & F (proc1.state = critical2) & F (proc2.state = critical2) & F (proc3.state = critical2) & F (proc4.state = critical2))
+LTLSPEC (! F (proc0.state = critical2 & proc1.state = idle & proc2.state = idle & proc3.state = idle & proc4.state = idle))
+LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = idle & proc3.state = idle & proc4.state = idle))
+LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = critical2 & proc3.state = idle & proc4.state = idle))
+LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = critical2 & proc3.state = critical2 & proc4.state = idle))
 
-LTLSPEC (F (proc0.state = critical2 & proc1.state != critical2 & proc2.state != critical2)
-         & F (proc0.state = critical2 & proc1.state = critical2 & proc2.state != critical2)
-         & F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = critical2))
 
 MODULE user(semaphore, pNum, apr)
  VAR
-   state : {idle, enqueue, critical1, critical2, critical3, critical4, critical5, exiting};
+   state : {idle, enqueue, critical1, critical2, exiting};
  ASSIGN
    init(state) := idle;
    next(state) :=
@@ -39,10 +29,7 @@ MODULE user(semaphore, pNum, apr)
        state = idle                                                         : enqueue;
        state = enqueue & semaphore > 0 & apr = pNum                         : critical1;
        state = critical1                                                    : critical2;
-       state = critical2                                                    : critical3;
-       state = critical3                                                    : critical4;
-       state = critical4                                                    : critical5;
-       state = critical5                                                    : exiting;
+       state = critical2                                                    : exiting;
        state = exiting                                                      : idle;
        TRUE                                                                 : state;
      esac;
@@ -50,15 +37,15 @@ MODULE user(semaphore, pNum, apr)
    next(semaphore) :=
      case
        state = enqueue & semaphore > 0 & apr = pNum  : semaphore -1;
-       state = exiting & semaphore < 3               : semaphore +1;
+       state = exiting & semaphore < 4               : semaphore +1;
        TRUE                                          : semaphore;
      esac;
 
    next(apr) :=
         case
-          state = critical1 & apr < 4       : apr +1;
-          state = critical1 & apr = 4       : 0;
-          TRUE                                            : apr;
+          state = enqueue & semaphore > 0 & apr = pNum & apr < 4       : apr +1;
+          state = enqueue & semaphore > 0 & apr = pNum & apr = 4       : 0;
+          TRUE                                                         : apr;
         esac;
  FAIRNESS
    running
