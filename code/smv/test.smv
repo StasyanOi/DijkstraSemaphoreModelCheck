@@ -17,6 +17,7 @@ LTLSPEC (! F (proc0.state = critical2 & proc1.state = idle & proc2.state = idle 
 LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = idle & proc3.state = idle & proc4.state = idle))
 LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = critical2 & proc3.state = idle & proc4.state = idle))
 LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = critical2 & proc3.state = critical2 & proc4.state = idle))
+LTLSPEC (! F (proc0.state = critical2 & proc1.state = critical2 & proc2.state = critical2 & proc3.state = critical2 & proc4.state = critical2))
 
 
 MODULE user(semaphore, pNum, apr)
