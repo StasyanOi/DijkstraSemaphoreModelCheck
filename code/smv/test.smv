@@ -8,7 +8,7 @@ MODULE main
    proc3     : process user(semaphore,3,apr);
    proc4     : process user(semaphore,4,apr);
  ASSIGN
-   init(semaphore) := 4;
+   init(semaphore) := 1;
    init(apr) := 0;
 
 
@@ -37,7 +37,7 @@ MODULE user(semaphore, pNum, apr)
    next(semaphore) :=
      case
        state = enqueue & semaphore > 0 & apr = pNum  : semaphore -1;
-       state = exiting & semaphore < 4               : semaphore +1;
+       state = exiting & semaphore < 1               : semaphore +1;
        TRUE                                          : semaphore;
      esac;
 
