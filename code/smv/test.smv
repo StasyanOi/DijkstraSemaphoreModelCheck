@@ -45,7 +45,7 @@ MODULE user(semaphore, pNum, apr)
    next(apr) :=
         case
           state = enqueue & semaphore >0 & apr = pNum & apr < 4       : apr +1;
-          state = enqueue & semaphore > 1 & apr = pNum & apr = 4       :0;
+          state = enqueue & semaphore >0 & apr = pNum & apr = 4       :0;
           TRUE                                                         : apr;
         esac;
  FAIRNESS
