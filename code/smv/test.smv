@@ -1,7 +1,7 @@
 MODULE main
  VAR
    semaphore   : {0,1,2,3,4,5,6,7,8,9,10};
-   apr       :0 .. 4                   ;
+   apr       :0 ..4                   ;
    proc0     : process user(semaphore,0,apr);
    proc1     : process user(semaphore,1,apr);
    proc2     : process user(semaphore,2,apr);
@@ -28,7 +28,7 @@ MODULE user(semaphore, pNum, apr)
    next(state) :=
      case
        state = idle                                                         : enqueue;
-       state = enqueue & semaphore >0 & apr = pNum                         : critical1;
+       state = enqueue & semaphore >0 & apr = pNum                          : critical1;
        state = critical1                                                    : critical2;
        state = critical2                                                    : exiting;
        state = exiting                                                      : idle;
@@ -44,8 +44,8 @@ MODULE user(semaphore, pNum, apr)
 
    next(apr) :=
         case
-          state = enqueue & semaphore >0 & apr = pNum & apr < 4       : apr +1;
-          state = enqueue & semaphore >0 & apr = pNum & apr = 4       :0;
+          state = enqueue & semaphore >0 & apr = pNum & apr <4         : apr +1;
+          state = enqueue & semaphore >0 & apr = pNum & apr =4         :0;
           TRUE                                                         : apr;
         esac;
  FAIRNESS
