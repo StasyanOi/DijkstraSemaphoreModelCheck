@@ -37,7 +37,7 @@ MODULE user(semaphore, pNum, apr)
 
    next(semaphore) :=
      case
-       state = enqueue & semaphore >0 & apr = pNum  : semaphore -1;
+       state = enqueue & semaphore >0 & apr = pNum   : semaphore -1;
        state = exiting & semaphore < 0               : semaphore +1;
        TRUE                                          : semaphore;
      esac;
